@@ -13,3 +13,6 @@
     margin: 5px;
     color: #555;
 }
+.bookDiv {
+    display: none;
+}

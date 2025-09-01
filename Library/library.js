@@ -5,11 +5,13 @@ function Book(title, author, pages, isRead) {
     if(!new.target) {
         throw Error('You must use keyword new to create an object');
     }
+
     this.id = '';
     this.title = title;
     this.author = author;
     this.pages = pages;
     this.isRead = isRead;
+
     /*
     this.info = function() {
         return (
@@ -22,19 +24,26 @@ function Book(title, author, pages, isRead) {
     */
 }
 
-function addBookToLibrary(Book) {
+function addBookToLibrary(book) {
     const newId = crypto.randomUUID();
     Book.id = newId;
-    myLibrary.push(Book);
-    return myLibrary;
+    myLibrary.push(book);
+
+    localStorage.setItem('bookLibrary', JSON.stringify(myLibrary));
+
+    displayBooks();
 }
 
-const book = new Book('Game of Thrones', 'JJ King', 289, true);
-addBookToLibrary(book);
+//Function to local books from localStorage
+function loadBooksFromLocalStorage() {
+    const storedBooks = JSON.parse(localStorage.getItem('bookLibrary')) || [];
+    storedBooks.forEach(book => {
+        const newBook = new Book(book.title, book.author, book.pages, book.isRead);
+        myLibrary.push(newBook);
+    });
 
-const book2 = new Book('1984', 'Rogers Rivers', 1354, true);
-addBookToLibrary(book2);
-
+    displayBooks();
+}
 
 //Function to display the books
 function displayBooks() {
@@ -58,4 +67,37 @@ function displayBooks() {
     });
 }
 
-displayBooks();
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    loadBooksFromLocalStorage();
+
+    document.getElementById('toggleBookForm').addEventListener('click', () => {
+        const bookLib = document.getElementById('bookLib');
+        
+        if(bookLib.style.display === 'none' || bookLib.style.display === '') {
+            bookLib.style.display = 'block';
+        }else {
+            bookLib.style.display = 'none';
+        }
+    });
+
+    document.getElementById('addBook').addEventListener('click', (event) => {
+        
+        event.preventDefault();
+
+        const title = document.getElementById('bookTitle').value;
+        const author = document.getElementById('bookAuthor').value;
+        const pages = document.getElementById('bookPages').value;
+        const isRead = document.getElementById('bookIsRead').value === 'readYes' ? true : false;
+
+        if(!title || !author || !pages) {
+            alert('Please fill out all fields');
+            return;
+        }
+
+        const newBook = new Book(title, author, pages, isRead);
+        addBookToLibrary(newBook);
+
+    });
+});

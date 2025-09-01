@@ -11,6 +11,28 @@
     <div id="bookLibrary">
         <script src="library.js"></script>
     </div>
+
+    <button id="toggleBookForm">Add bew book</button><br><br>
+
+    <div id="bookLib" class="bookDiv">
+        <form action="POST" id="formAddBook">
+            <label for="title" id="title">Title: </label>
+            <input type="text" id="bookTitle" /><br><br>
+            
+            <label for="author" id="author">Author: </label>
+            <input type="text" id="bookAuthor" /><br><br>
+
+            <label for="title" id="pages">Pages: </label>
+            <input type="number" id="bookPages" /><br><br>
+
+            <label for="isRead" id="isRead">Read: </label>
+            <input type="radio" id="bookIsRead" value="Readyes" /><br><br>
+
+            <button name="submit" id="addBook">Send</button>
+
+        </form>
+
+    </div>
     
 </body>
 </html>
